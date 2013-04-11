@@ -45,7 +45,14 @@ Options:
     default_period: default period used by ARSER for searching, default 24h
 example: 
 
+    1. searching circadian rhythm
     $ python arser.py data.txt output.txt >& log.txt
+    
+    2. searching ultradian rhythm
+    $ python arser.py data.txt output.txt 10 18 14 >& log.txt
+    
+    3. searching infradian rhythm
+    $python arser.py data.txt output.txt 30 42 36 >& log.txt
 
 Input/Output Files
 ==================
