@@ -36,7 +36,13 @@ Usage
 =====
 Command-line running:  
 
-    python arser.py input_file_name output_file_name
+    python arser.py input_file_name output_file_name start(optional) end(optional) default_period(optional)
+Options:
+
+    ARSER searches period in the range [start, end]
+    start: period searching range start, default 20h
+    end: period searching range end, default 28h
+    default_period: default period used by ARSER for searching, default 24h
 example: 
 
     $ python arser.py data.txt output.txt >& log.txt
