@@ -152,18 +152,21 @@ if __name__ == '__main__':
     run_start = time.time()
     random.seed(run_start)
     if len(sys.argv)==1:
-        print 'Usage: mypython arser.py inputfile outputfile start(optional) end(optional)'
+        print 'Usage: mypython arser.py inputfile outputfile start(optional) end(optional) default_period(optional)'
         print 'start: default 20'
         print 'end: default 28'
+        print 'default_period: 24'
         sys.exit(0)
     fin = open(sys.argv[1])
     tempfile = "temp" + str(random.random())
     fou = open(tempfile,'w')
     start = 20
     end = 28
+    T_default = 24
     if len(sys.argv)>3:
         start = float(sys.argv[3])
         end = float(sys.argv[4])
+        T_default = float(sys.argv[5])
 
     # get time_points at header of input file
     time_points = map(float, fin.readline().split()[1:])
@@ -175,7 +178,7 @@ if __name__ == '__main__':
         probe  = line.split()
         y_value = map(float, probe[1:])
         arser = Arser(time_points, y_value)
-        d = arser.evaluate(start, end)    # search period in frequency domain range:[start,end]
+        d = arser.evaluate(start, end, T_default)    # search period in frequency domain range:[start,end]
         opt_line = [probe[0]]	# probe name column
         opt_line.append(int(d['filter']))	# model type column
         opt_line.append(d['ar_method'])    # arse method column
