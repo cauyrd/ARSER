@@ -54,6 +54,10 @@ example:
     3. searching infradian rhythm
     $python arser.py data.txt output.txt 30 42 36 >& log.txt
 
+
+#####Note: If there is any warning message when the program is running, just ignore them. These warning messages come from calling R functions.
+
+
 Input/Output Files
 ==================
 Note: Sample input and output files can be found in the *examples/* subdirectory.
