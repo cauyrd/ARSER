@@ -158,7 +158,7 @@ if __name__ == '__main__':
     run_start = time.time()
     random.seed(run_start)
     if len(sys.argv)==1:
-		print 'version 2.0'
+        print 'version 2.0'
         print 'Usage: python arser.py inputfile outputfile start(optional) end(optional) default_period(optional)'
         print 'start: default 20'
         print 'end: default 28'
