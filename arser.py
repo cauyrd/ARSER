@@ -6,10 +6,13 @@ Author: Rendong Yang
 Email: cauyrd@gmail.com
 '''
 import lib.utility as HR
-from rpy import *
+import rpy2.robjects as robjects
 from pylab import detrend_linear
 import numpy as np
 import sys
+r = robjects.r
+spec_ar = r['spec.ar']
+p_adjust = r['p.adjust']
 
 class Arser:
     '''
@@ -64,23 +67,25 @@ class Arser:
             filter_y = HR.savitzky_golay(self.dt_y, kernel=5, order=2)
         if is_filter:
             try:
-                mese = r.spec_ar(filter_y.tolist(), n_freq=num_freq_mese, plot=r.FALSE, method=ar_method, order=set_order)
-            except RPyRException:
-                return []
+                mese = spec_ar(robjects.FloatVector(filter_y.tolist()), n_freq=num_freq_mese, plot=False, method=ar_method, order=set_order)
+            except:
+                print 'spec_ar running error at line 70'
+                sys.exit(1)
         else:
             try:
-                mese = r.spec_ar(self.dt_y.tolist(), n_freq=num_freq_mese, plot=r.FALSE, method=ar_method, order=set_order)
-            except RPyRException:
-                return []
+                mese = spec_ar(robjects.FloatVector(self.dt_y.tolist()), n_freq=num_freq_mese, plot=False, method=ar_method, order=set_order)
+            except:
+                print 'spec_ar running error at line 76'
+                sys.exit(1)
  
         # search all the locial peaks of maximum entropy spectrum
         peaks_loc = []      # the locition for each peak in mese spectrum
         for i in range(1, num_freq_mese-1):
-            if mese['spec'][i] > mese['spec'][i+1] and mese['spec'][i] > mese['spec'][i-1]:
-                peaks_loc.append((mese['spec'][i], i))
+            if mese.rx2('spec')[i] > mese.rx2('spec')[i+1] and mese.rx2('spec')[i] > mese.rx2('spec')[i-1]:
+                peaks_loc.append((mese.rx2('spec')[i], i))
         peaks_loc.sort(reverse=True)    # sort frequency by spectrum value
         try:
-            periods = [1/mese['freq'][item[1]]*self.delta for item in peaks_loc]
+            periods = [1/mese.rx2('freq')[item[1]]*self.delta for item in peaks_loc]
         except:
             periods = []
         return periods
@@ -90,12 +95,12 @@ class Arser:
         general harmonic regression
         dt_y = mesor + sigma( A*cos(2*pi/T*x) + B*sin(2*pi/T*x) ) + error
         '''
-        x = array([])
+        x = np.array([])
         x = x.reshape(len(self.x), 0)
         x_varnm_names = []
         for T in period:
-            cosx = cos(2*np.pi/T*self.x)
-            sinx = sin(2*np.pi/T*self.x)
+            cosx = np.cos(2*np.pi/T*self.x)
+            sinx = np.sin(2*np.pi/T*self.x)
             x = np.c_[x, cosx, sinx]
             x_varnm_names += ['cos%.1f' % T,'sin%.1f' % T]
         model = HR.ols(self.dt_y, x, y_varnm = 'y', x_varnm = x_varnm_names)
@@ -133,11 +138,11 @@ class Arser:
         self.phase = []
         m = best_model['ols_obj']
         for i in range(len(self.estimate_period)):
-            phi = angle(complex(m.b[2*i+1], -m.b[2*i+2]))
+            phi = np.angle(np.complex(m.b[2*i+1], -m.b[2*i+2]))
             
             # for float point number can not compare with 0, so use <1e-6 as nonpositive real number
-            self.phase.append(np.fabs(phi)/(2*np.pi)*self.estimate_period[i] if phi<=1e-6 else self.estimate_period[i] - phi/(2*pi)*self.estimate_period[i]) 
-            self.amplitude.append(sqrt(m.b[2*i+1]**2 + m.b[2*i+2]**2))
+            self.phase.append(np.fabs(phi)/(2*np.pi)*self.estimate_period[i] if phi<=1e-6 else self.estimate_period[i] - phi/(2*np.pi)*self.estimate_period[i]) 
+            self.amplitude.append(np.sqrt(m.b[2*i+1]**2 + m.b[2*i+2]**2))
         self.R2 = m.R2
         self.R2adj = m.R2adj
         self.pvalue = m.Fpv
@@ -200,19 +205,19 @@ if __name__ == '__main__':
     fin = open(tempfile)
     fou = open(sys.argv[2],'w')
     head = fin.readline().split()
-    head.insert(12,'qvalue')
-    head.insert(13,'fdr_BH')
+    #head.insert(12,'qvalue')
+    head.insert(12,'fdr_BH')
     print >>fou, '\t'.join(head)
-    r.library('siggenes')
-    pi0 = r.pi0_est(pvalues)
-    if pi0['p0'] == 0:
-        pi0['p0'] = 0.95
-    qvalues = r.qvalue_cal(pvalues,pi0['p0'])
-    qvalues_BH = r.p_adjust(pvalues,'BH')
+    #r.library('siggenes')
+    #pi0 = r.pi0_est(pvalues)
+    #if pi0['p0'] == 0:
+    #    pi0['p0'] = 0.95
+    #qvalues = r.qvalue_cal(pvalues,pi0['p0'])
+    qvalues_BH = p_adjust(pvalues,'BH')
     for i,line in enumerate(fin):
         data = line.split()
-        data.insert(12,str(qvalues[i]))
-        data.insert(13,str(qvalues_BH[i]))
+        #data.insert(12,str(qvalues[i]))
+        data.insert(12,str(qvalues_BH[i]))
         print >>fou, '\t'.join(data)
     os.remove(tempfile)
-    print 'time used:', str(time.time()-run_start)
+    print 'time used:', str(time.time()-run_start), 'seconds'

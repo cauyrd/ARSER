@@ -19,13 +19,13 @@ ARSER package is implemented by Python calling R program. Before using the packa
 please install the following software and packages first:
 
 - Programing environments:    
-    1. Python version 2.5 or later
-    2. R version 2.7 or later
+    1. Python v2.7 or later
+    2. R v3.1 or later
 - Packages:
-    3. scipy version 0.7 or later
-    4. numpy version 1.1 or later
-    5. matplotlib version 0.99 or later
-    6. Rpy
+    3. scipy v0.7 or later
+    4. numpy v1.1 or later
+    5. matplotlib v0.99 or later
+    6. Rpy2 v2.5.6 or later
 - Tips:
     To avoid wading through all the details (and potential complications) on Installation, 
     the easiest thing for you to do is use one of the pre-packaged python distributions 
@@ -76,7 +76,6 @@ Note: Sample input and output files can be found in the *examples/* subdirectory
             R2adj       -> adjusted R square of regression curve
             coef_var    -> (standard deviation) / mean
             pvalue 			-> F test for testing significant regression model
-            qvalue      -> FDR by stroy method
             FDR_BH      -> FDR by BH method
             filter_type -> filtering for noise by ARSER
                             0 -- no filtering
@@ -99,15 +98,8 @@ Rendong Yang and Zhen Su, Analyzing circadian expression data by harmonic regres
 Additional Information
 =======================
 ARSER website at 
-http://bioinformatics.cau.edu.cn/ARSER
+https://github.com/cauyrd/ARSER/releases
 
-A webserver of ARSER algorithm can be found at
-http://bioinfo.cau.edu.cn/BioClock
-
-Please contact me if you have suggestions for improvement or 
-if any problem arises in the use of the program, 
-or the interpretation of the results.
-
+Questions to:
 Rendong Yang
-
 cauyrd@gmail.com
