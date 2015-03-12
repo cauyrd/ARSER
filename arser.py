@@ -4,6 +4,7 @@ based on autoregressive spectral estimation
 Usage: pyhton arser.py inputfile outputfile
 Author: Rendong Yang
 Email: cauyrd@gmail.com
+Version: 2.0
 '''
 import lib.utility as HR
 import rpy2.robjects as robjects
@@ -157,7 +158,8 @@ if __name__ == '__main__':
     run_start = time.time()
     random.seed(run_start)
     if len(sys.argv)==1:
-        print 'Usage: mypython arser.py inputfile outputfile start(optional) end(optional) default_period(optional)'
+		print 'version 2.0'
+        print 'Usage: python arser.py inputfile outputfile start(optional) end(optional) default_period(optional)'
         print 'start: default 20'
         print 'end: default 28'
         print 'default_period: 24'
