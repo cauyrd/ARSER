@@ -91,6 +91,11 @@ Additional Tools
 ================
 See the README file in the tools subdirectory.
 
+R implementation of ARSER algorithm
+====================================
+Dr. Gang Wu has implementated a R code for ARSER algorithm. If you are familar with R program, please try it out.
+https://github.com/gangwug/MetaCycle/blob/master/R/ARS.R
+
 Citations
 =======================
 Rendong Yang and Zhen Su, Analyzing circadian expression data by harmonic regression based on autoregressive spectral estimation *Bioinformatics*. 2012 Jun 15;26(12):i168-74.
