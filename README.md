@@ -18,14 +18,22 @@ Pre-installation
 ARSER package is implemented by Python calling R program. Before using the package, 
 please install the following software and packages first:
 
-- Programing environments:    
+- Programing environments:  
+
     1. Python v2.7 or later
+    
     2. R v3.1 or later
+    
 - Packages:
+
     3. scipy v0.7 or later
+    
     4. numpy v1.1 or later
+    
     5. matplotlib v0.99 or later
+    
     6. Rpy2 v2.5.6 or later
+    
 - Tips:
     To avoid wading through all the details (and potential complications) on Installation, 
     the easiest thing for you to do is use one of the pre-packaged python distributions 
